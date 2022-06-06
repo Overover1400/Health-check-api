@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  db:
+    container_name: health_check_api_mysql
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile:
+        healthCheckApi.Dockerfile
+    networks:
+      - defualt
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --defualt-authentication-plugin=mysql_native_password
+
+  #    command: mysqld --skip-ssl --character-set-server=utf8mb4
+  #    image: mysql:5.7
+  #    hostname: mysql
+
+
+
+  health-check-api:
+    container_name: health_check_api
+    build:
+      context: .
+      dockerfile: healthCheckApi.Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    volumes:
+      - .:./app/
+networks:
+    defualt:
+volumes:
+  mysql_data:
+
+
+#    platform: linux/amd64
+#    image: golang:latest
+#    restart: always
+#    hostname: golang
+
+
+
