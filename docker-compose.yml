@@ -10,6 +10,8 @@ services:
     networks:
       - default
     restart: always
+    ports:
+      - "3306:3306"
     # setting some env vars to create the DB
     environment:
       MYSQL_ROOT_PASSWORD: "root"

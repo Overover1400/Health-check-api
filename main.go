@@ -13,8 +13,8 @@ import (
 func main() {
 
 	//TODO use "swagger" for document
-	db := "root:root@tcp(localhost:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
-	//db := "root:root@tcp(health_check_api_db:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	//db := "root:root@tcp(localhost:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	db := "root:root@tcp(health_check_api_db:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
 	//	os.Getenv("MYSQL_USER"),
 	//	os.Getenv("MYSQL_PASSWORD"),
 	//	os.Getenv("MYSQL_HOST"),
