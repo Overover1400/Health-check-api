@@ -1,9 +1,7 @@
 package store
 
 import (
-	"fmt"
 	"github.com/overover1400/api-health-check/entity"
-	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -23,23 +21,25 @@ func (m MySqlStore) FindClientApiToHealthCheck() error {
 	//TODO separate http.get to delivery layer
 	if len(clientUrl) != 0 {
 		for i := 0; i < len(clientUrl); i++ {
-			resp, err := http.Get(clientUrl[i].ListenerUrl)
+			resp, err := http.Get(clientUrl[i].Url)
+			//TODO defer should not use inside "for" loop for resource leak
+			defer resp.Body.Close()
 			if err != nil {
 				return err
 			}
-
-			b, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				return err
-			}
-
-			fmt.Println(string(b))
-			if err := m.db.Save(&clientUrl[i]).Error; err != nil {
-				return err
-			}
-
 			m.db.Model(&ClientApi{}).Where("id = ?", clientUrl[i].ID).
 				Update("interval_date=?", time.Now().String()[:19])
+
+			if resp.StatusCode != 200 {
+
+				resp, err = http.Get(clientUrl[i].ListenerUrl)
+				//TODO defer should not use inside "for" loop for resource leak
+				defer resp.Body.Close()
+				if err != nil {
+					return err
+				}
+
+			}
 
 		}
 	}
