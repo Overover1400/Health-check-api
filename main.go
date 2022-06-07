@@ -13,8 +13,8 @@ import (
 func main() {
 
 	//TODO use "swagger" for document
-	//db := "root:root@tcp(172.17.0.1:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
-	db := "root:root@tcp(health_check_api_db:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	db := "root:root@tcp(localhost:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	//db := "root:root@tcp(health_check_api_db:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
 	//	os.Getenv("MYSQL_USER"),
 	//	os.Getenv("MYSQL_PASSWORD"),
 	//	os.Getenv("MYSQL_HOST"),
@@ -30,7 +30,7 @@ func main() {
 		// every 1 minute select from databases to send health check api request
 		err := c.AddFunc("1 * * * *", func() {
 			// cron will check databases every minute
-		
+
 			if err := v1.HealthCheckApi(mysql); err != nil {
 				log.Fatalln("health Check api has error : ", err)
 			}
