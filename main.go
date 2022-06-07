@@ -30,8 +30,7 @@ func main() {
 		// every 1 minute select from databases to send health check api request
 		err := c.AddFunc("1 * * * *", func() {
 			// cron will check databases every minute
-			//TODO to send request internally should communicate with Protocol Buffers
-
+		
 			if err := v1.HealthCheckApi(mysql); err != nil {
 				log.Fatalln("health Check api has error : ", err)
 			}
