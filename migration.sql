@@ -1,4 +1,4 @@
-CREATE TABLE ClientApi
+CREATE TABLE client_api
 (
     id                INTEGER PRIMARY KEY,
     health_check_time INTEGER,
@@ -6,12 +6,14 @@ CREATE TABLE ClientApi
     listener_url      VARCHAR(200),
     url               VARCHAR(100),
     http_method       VARCHAR(100),
-    http_headey       VARCHAR(100),
+    header       VARCHAR(100),
     body              VARCHAR(100),
-    date_interval              dateTime
+    interval_date;              dateTime
 );
-INSERT into ClientApi (id, health_check_time, toggle_client_api, listener_url, url, http_method, http_headey, body,
-                       date_interval)
+INSERT into client_api (id, health_check_time, toggle_client_api, listener_url, url, http_method, http_header, body,
+                       interval_date)
 VALUES (1, 3600, true, 'localhost:8080/listener-api', 'https://google.com', 'get', 'header', 'body', now());
 
-# select * from ClientApi where subdate(now(), interval health_check_time second) >= date_interval;
+
+# Queries on project
+#select * from client_api where subdate(now(), interval health_check_time second) >= interval_date;
