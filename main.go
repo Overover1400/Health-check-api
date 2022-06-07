@@ -7,19 +7,19 @@ import (
 	"github.com/overover1400/api-health-check/delivery/http/v1"
 	"github.com/robfig/cron"
 	"log"
-	"os"
+	"net/http"
 )
 
 func main() {
 
 	//TODO use "swagger" for document
-	//dataBaseName := "client_api_user:client_api_pass@tcp(127.0.0.1:3306)/client_api?charset=utf8mb4&parseTime=True&loc=Local"
-	db := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		os.Getenv("MYSQL_USER"),
-		os.Getenv("MYSQL_PASSWORD"),
-		os.Getenv("MYSQL_HOST"),
-		os.Getenv("MYSQL_PORT"),
-		os.Getenv("MYSQL_DATABASE"))
+	//db := "root:root@tcp(172.17.0.1:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	db := "root:root@tcp(health_check_api_db:3306)/api?charset=utf8mb4&parseTime=True&loc=Local"
+	//	os.Getenv("MYSQL_USER"),
+	//	os.Getenv("MYSQL_PASSWORD"),
+	//	os.Getenv("MYSQL_HOST"),
+	//	os.Getenv("MYSQL_PORT"),
+	//	os.Getenv("MYSQL_DATABASE"))
 
 	//connect to databases and auto migrate
 	mysql := store.New(db)
@@ -59,6 +59,10 @@ func main() {
 	e.GET("/list", v1.FindClientApis(mysql))
 
 	e.DELETE("/delete/:id", v1.DeleteClientApi(mysql))
+
+	e.GET("/test", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, "hello from test")
+	})
 
 	//TODO Gracefully shutdown with os.Sig
 	e.Logger.Fatal(e.Start(":8080"))

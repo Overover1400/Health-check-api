@@ -12,7 +12,10 @@ require (
 require (
 	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/fatih/color v1.9.0 // indirect
+	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
 	github.com/go-chi/chi v4.0.2+incompatible // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
@@ -22,6 +25,7 @@ require (
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/radovskyb/watcher v1.0.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect

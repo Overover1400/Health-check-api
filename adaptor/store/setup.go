@@ -9,11 +9,11 @@ type MySqlStore struct {
 	db *gorm.DB
 }
 
-func New(dataBaseName string) MySqlStore {
+func New(dataBase string) MySqlStore {
 
-	db, err := gorm.Open(mysql.Open(dataBaseName))
+	db, err := gorm.Open(mysql.Open(dataBase))
 	if err != nil {
-		panic("Failed to connect Database")
+		panic("Failed to connect Database" + dataBase)
 	}
 
 	if err := db.AutoMigrate(&ClientApi{}); err != nil {

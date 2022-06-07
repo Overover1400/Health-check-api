@@ -2,53 +2,48 @@ version: '3.7'
 
 services:
   db:
-    container_name: health_check_api_mysql
-    platform: linux/amd64
+    container_name: "health_check_api_db"
+    platform: linux/x86_64
     build:
       context: .
-      dockerfile:
-        healthCheckApi.Dockerfile
+      dockerfile: db.Dockerfile
     networks:
-      - defualt
+      - default
     restart: always
-    ports:
-      - 3306:3306
+    # setting some env vars to create the DB
     environment:
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "api"
+      MYSQL_USER: "hamed"
+      MYSQL_PASSWORD: "root"
+
+
+    # we mount a data volume to make sure we don't lose data
     volumes:
       - mysql_data:/var/lib/mysql
-    command: --defualt-authentication-plugin=mysql_native_password
-
-  #    command: mysqld --skip-ssl --character-set-server=utf8mb4
-  #    image: mysql:5.7
-  #    hostname: mysql
+    command: --default-authentication-plugin=mysql_native_password
 
 
-
-  health-check-api:
-    container_name: health_check_api
+  api:
+    container_name: "health_check_api"
+    # we want to use the image which is build from our api.db.api.db.Dockerfile
     build:
       context: .
-      dockerfile: healthCheckApi.Dockerfile
+      dockerfile: api.Dockerfile
+    networks:
+      - default
+    restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
+    # we are depending on the mysql backend
     depends_on:
       - db
+    # We mount the working dir into the container, handy for development
+    # This is what makes the hot reloading work inside of a docker container
     volumes:
-      - .:./app/
+      - .:/app/
 networks:
-    defualt:
+   default:
 volumes:
-  mysql_data:
-
-
-#    platform: linux/amd64
-#    image: golang:latest
-#    restart: always
-#    hostname: golang
-
-
+   mysql_data:
 
